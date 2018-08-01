@@ -51,16 +51,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        var result = 0;
+        var result = { "result": $("#res").val }
         $("#getresult").on("click", function () {
             $.ajax({
                 type: "POST",
                 url: "/Home/Index",
-                data: { result: $("#res").val() },
+                data: result,
                 success: function (data) {
-                    result += data;
+                    $("res").val = data
                 }
-            });
+            });          
         });
     });
 </script>

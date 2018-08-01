@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CurrencyConverter.Controllers
 {
+    [Route("/rickshaw")]
     public class RickshawController : Controller
     {
         CurrencyRepository currencyRepository;
@@ -16,10 +17,9 @@ namespace CurrencyConverter.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
-        [Route("/rickshaw")]
         [HttpGet]
         public IActionResult Rickshaw()
         {
