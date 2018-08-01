@@ -1,0 +1,87 @@
+﻿@model CurrencyConverter.Models.ViewModels.RickshawViewModel
+@using Newtonsoft.Json;
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Rickshaw</title>
+
+    <link type="text/css" rel="stylesheet" href="CSS/graph.css">
+    <link type="text/css" rel="stylesheet" href="CSS/css_detail.css">
+    <link type="text/css" rel="stylesheet" href="CSS/css_legend.css">
+    <link type="text/css" rel="stylesheet" href="CSS/css_lines.css">
+
+    <script src="Scripts/d3.v2.js"></script>
+    <script src="Scripts/rickshaw.min.js"></script>
+</head>
+<body>
+
+    @foreach (var curr in Model.Currencies)
+    {
+        <div>
+            <input type="checkbox" id="@curr" name="feature"
+                   value="@curr" checked />
+            <label for="@curr">@curr</label>
+        </div>
+    }
+
+
+    @{
+        var cs_arr = Model.CurrToGraph.ToArray();
+    }
+
+    <div id="chart_container">
+        <div id="chart"></div>
+        <div id="legend_container">
+            <div id="smoother" title="Smoothing"></div>
+            <div id="legend"></div>
+        </div>
+        <div id="slider"></div>
+    </div>
+
+    <script>
+
+
+			var _jsArr = @Html.Raw(JsonConvert.SerializeObject(cs_arr));
+
+			// instantiate our graph!
+
+			var graph = new Rickshaw.Graph( {
+				element: document.getElementById("chart"),
+				width: 960,
+				height: 500,
+				renderer: 'line',
+				series: [ {
+				color: "#c05020",
+				data: _jsArr,
+				name: 'USD'
+			} ]
+			} );
+
+			graph.render();
+
+			var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+				graph: graph
+			} );
+
+			var legend = new Rickshaw.Graph.Legend( {
+				graph: graph,
+				element: document.getElementById('legend')
+
+			} );
+
+			var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
+				graph: graph,
+				legend: legend
+			} );
+
+			var axes = new Rickshaw.Graph.Axis.Time( {
+				graph: graph
+			} );
+			axes.render();
+
+    </script>
+
+</body>
+</html>
+
