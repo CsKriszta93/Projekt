@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width initial-scale=1, shrink-to-fit=no">
-    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-    
+
     <title>Currency</title>
 </head>
 <body>
     <h1 style="padding: 50px, 20px, 0px, 0px">Exchange Currencies</h1>
-   
+
     <div class="container">
         @using (Html.BeginForm("Index", "Home", FormMethod.Post))
         {
@@ -23,24 +23,24 @@
             </div>
             <div class="row">
                 <div class="form-group col-xs-3">
-                    @Html.LabelFor(c => c.FromCurrId)
-                    @Html.DropDownListFor(c => c.FromCurrId, new SelectList(Model.Currencies, "Id", "Currency"), "From Currency", new { @class = "form-control" })
+                    @Html.Label("From Currency:")
+                    @Html.DropDownListFor(c => c.IdFrom, new SelectList(Model.Currencies, "Id", "Currency"), "From Currency", new { @class = "form-control" })
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-xs-3">
-                    @Html.LabelFor(c => c.ToCurrId)
-                    @Html.DropDownListFor(c => c.ToCurrId, new SelectList(Model.Currencies, "Id", "Currency"), "To Currency", new { @class = "form-control" })
+                    @Html.Label("To Currency:")
+                    @Html.DropDownListFor(c => c.IdTo, new SelectList(Model.Currencies, "Id", "Currency"), "To Currency", new { @class = "form-control" })
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-xs-3">
                     @Html.LabelFor(c => c.Result)
-                    @Html.TextBoxFor(c => c.Result, new { @placeholder = "0", @class = "form-control" })
+                    @Html.TextBoxFor(c => c.Result, new { @id = "res", @placeholder = "0", @class = "form-control" })
                 </div>
             </div>
-          <button type = "submit" class="btn btn-primary">Exchange</button>
-}
+            <button type="submit" id="getresult" class="btn btn-primary">Exchange</button>
+        }
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -53,7 +53,6 @@
 
         var result = 0;
         $("#getresult").on("click", function () {
-
             $.ajax({
                 type: "POST",
                 url: "/Home/Index",

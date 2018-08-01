@@ -25,18 +25,12 @@ namespace CurrencyConverter.Repositories
                 return currencies;
         }
 
-        public Money GetCurrencyById(int id)
-        {
-            var curr = currencyContext.Currencies.Where(c => c.Id == id).FirstOrDefault();
-
-            return curr;
-        }
-
-        public decimal CalculateAmount(decimal amount,int fromCurrId, int toCurrId)
+        public decimal CalculateAmount(decimal amount, int idFrom, int idTo)
         {
             decimal result = 0;
-            var fromCurr = GetCurrencyById(fromCurrId);
-            var toCurr = GetCurrencyById(toCurrId);
+
+            Money fromCurr = GetCurrencyById(idFrom);
+            Money toCurr = GetCurrencyById(idTo);
 
             if (amount == 0)
             {
@@ -45,7 +39,14 @@ namespace CurrencyConverter.Repositories
             else
             {
                 return result += (amount / fromCurr.Rate) * toCurr.Rate;
-            }          
+            }
+        }
+
+        public Money GetCurrencyById(int currId)
+        {
+            Money selectedCurr = currencyContext.Currencies.FirstOrDefault(c => c.Id == currId);
+
+            return selectedCurr;
         }
 
         public List<Money> GetAllCurrencies()

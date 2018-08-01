@@ -31,35 +31,20 @@ namespace CurrencyConverter.Controllers
         [HttpPost]
         public IActionResult Index(decimal amount, int idFrom, int idTo)
         {
-            var currencies = currencyRepository.CurrenciesToChooseFrom();
-            var fromCurr = currencyRepository.GetCurrencyById(idFrom);
-            var toCurr = currencyRepository.GetCurrencyById(idTo);
             var result = currencyRepository.CalculateAmount(amount, idFrom, idTo);
 
             if (ModelState.IsValid)
             {
-                var viewModel = new CurrencyFormViewModel()
+                var viewModel = new CurrencyFormViewModel
                 {
-                    Currencies = currencies,
-                    FromCurrId = idFrom,
-                    ToCurrId = idTo,
                     Amount = amount,
                     Result = result
                 };
 
-                return View("Index", viewModel);
+                return RedirectToAction("Index", viewModel);
             }
 
-            return NotFound();
-        }
-
-        [Route("/rickshaw")]
-        [HttpGet]
-        public IActionResult Rickshaw()
-        {
-            var currencies = currencyRepository.CurrenciesToRickshawPage();
-
-            return View(currencies);
+            return NotFound();           
         }
     }
 }
