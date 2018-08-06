@@ -22,6 +22,7 @@ namespace CurrencyConverter.Controllers
         }
 
         [HttpGet]
+        [Route("/graph")]
         public IActionResult Rickshaw()
         {
             var currencies = currencyRepository.CurrenciesToRickshawPage();

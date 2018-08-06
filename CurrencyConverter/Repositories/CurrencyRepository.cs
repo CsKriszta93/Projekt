@@ -80,7 +80,7 @@ namespace CurrencyConverter.Repositories
                 {
                     if (money.Currency == curr)
                     {
-                        graph.data.Add(new RickshawViewModel.Vector2(id, money.Rate * 10));
+                        graph.data.Add(new RickshawViewModel.Vector2(id, money.Rate));
                         id++;
                     }
                 }
