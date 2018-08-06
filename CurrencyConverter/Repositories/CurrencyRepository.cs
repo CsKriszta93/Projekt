@@ -59,18 +59,39 @@ namespace CurrencyConverter.Repositories
 
         public RickshawViewModel CurrenciesToRickshawPage()
         {
-            RickshawViewModel rickshawViewModel = new RickshawViewModel();
+            var rickshawViewModel = new RickshawViewModel();
+
+            string[] colorlist = new string[] { "#c05020", "30c020", "6060c0", "red", "green", "blue", "yellow", "black", "white", "steelblue", "lightblue" };
 
             rickshawViewModel.Currencies = currencyContext.Currencies.Select(x => x.Currency).Distinct();
-            rickshawViewModel.CurrToGraph = new List<RickshawViewModel.Vector2>();
 
-            int id = 0;
-            foreach (var curr in currencyContext.Currencies)
-                if (curr.Currency == "USD")
+            rickshawViewModel.currencyGraph= new List<RickshawViewModel.CurrencyGraph>();
+
+            int colorId = 0;
+
+            foreach (var curr in rickshawViewModel.Currencies)
+            {
+                int id = 0;
+                RickshawViewModel.CurrencyGraph graph = new RickshawViewModel.CurrencyGraph();
+                graph.name = curr;
+                graph.color = colorlist[colorId];
+
+                foreach (var money in currencyContext.Currencies)
                 {
-                    rickshawViewModel.CurrToGraph.Add(new RickshawViewModel.Vector2(id, curr.Rate * 10));
-                    id++;
+                    if (money.Currency == curr)
+                    {
+                        graph.data.Add(new RickshawViewModel.Vector2(id, money.Rate * 10));
+                        id++;
+                    }
                 }
+                    
+                rickshawViewModel.currencyGraph.Add(graph);
+
+                if (colorId < colorlist.Length - 1)
+                {
+                    colorId++;
+                }               
+            }
 
             return rickshawViewModel;
         }

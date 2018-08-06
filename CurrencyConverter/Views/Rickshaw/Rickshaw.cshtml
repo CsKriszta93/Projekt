@@ -4,12 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
-    <title>Rickshaw</title>
+    <title>Hello word</title>
 
     <link type="text/css" rel="stylesheet" href="CSS/graph.css">
     <link type="text/css" rel="stylesheet" href="CSS/css_detail.css">
     <link type="text/css" rel="stylesheet" href="CSS/css_legend.css">
     <link type="text/css" rel="stylesheet" href="CSS/css_lines.css">
+
 
     <script src="Scripts/d3.v2.js"></script>
     <script src="Scripts/rickshaw.min.js"></script>
@@ -19,15 +20,10 @@
     @foreach (var curr in Model.Currencies)
     {
         <div>
-            <input type="checkbox" id="@curr" name="feature"
-                   value="@curr" checked />
+            <input type="checkbox" id="@curr" name="feature" onclick="checkbox_click('@curr')"
+                   value="@curr" />
             <label for="@curr">@curr</label>
         </div>
-    }
-
-
-    @{
-        var cs_arr = Model.CurrToGraph.ToArray();
     }
 
     <div id="chart_container">
@@ -42,46 +38,65 @@
     <script>
 
 
-			var _jsArr = @Html.Raw(JsonConvert.SerializeObject(cs_arr));
+			var all_curr = @Html.Raw(JsonConvert.SerializeObject(Model.currencyGraph));
+			var selected_curr = new Array();
 
-			// instantiate our graph!
+			var graph;
+			var hoverDetail;
+			var legend;
+			var shelving;
+			var axes;
 
-			var graph = new Rickshaw.Graph( {
+        function checkbox_click(Id) {
+            var chk = document.getElementById(Id);
+			var i;
+			for (i = 0; i < all_curr.length && all_curr[i].name != Id; i++);
+
+			if(chk.checked)
+            {
+                selected_curr.push(all_curr[i]);
+			}
+			else
+			{
+			  	selected_curr.pop(all_curr[i]);
+            }
+
+            redraw_graph();
+        }
+
+		function redraw_graph() {
+			graph = new Rickshaw.Graph( {
 				element: document.getElementById("chart"),
 				width: 960,
-				height: 500,
+				height: 1000,
 				renderer: 'line',
-				series: [ {
-				color: "#c05020",
-				data: _jsArr,
-				name: 'USD'
-			} ]
+				series: selected_curr
 			} );
 
 			graph.render();
 
-			var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+			hoverDetail = new Rickshaw.Graph.HoverDetail( {
 				graph: graph
 			} );
 
-			var legend = new Rickshaw.Graph.Legend( {
+			legend = new Rickshaw.Graph.Legend( {
 				graph: graph,
 				element: document.getElementById('legend')
 
 			} );
 
-			var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
+			shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
 				graph: graph,
 				legend: legend
 			} );
 
-			var axes = new Rickshaw.Graph.Axis.Time( {
+			axes = new Rickshaw.Graph.Axis.Time( {
 				graph: graph
 			} );
 			axes.render();
+		}
 
     </script>
 
 </body>
 </html>
-

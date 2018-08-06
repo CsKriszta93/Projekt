@@ -5,23 +5,36 @@ namespace CurrencyConverter.Models.ViewModels
     public class RickshawViewModel
     {
         public IEnumerable<string> Currencies { get; set; }
-        public List<Vector2> CurrToGraph { get; set; }
+        public List<CurrencyGraph> currencyGraph;
 
         public RickshawViewModel()
         {
 
         }
 
+        public class CurrencyGraph
+        {
+            public CurrencyGraph()
+            {
+                data = new List<Vector2>();
+            }
+
+            public string name;
+            public string color;
+            public List<Vector2> data { get; set; }
+        }
+
         public class Vector2
         {
-            public int X { get; set; }
-            public decimal Y { get; set; }
-
             public Vector2(int x, decimal y)
             {
-                X = x;
-                Y = y;
+                this.x = x;
+                this.y = y;
             }
-        }
+
+            public int x { get; set; }
+            public decimal y { get; set; }
+        }       
     }
 }
+

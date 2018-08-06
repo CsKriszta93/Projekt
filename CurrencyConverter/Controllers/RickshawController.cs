@@ -17,14 +17,14 @@ namespace CurrencyConverter.Controllers
 
         public IActionResult Index()
         {
-            return View("Index");
+            var currencies = currencyRepository.CurrenciesToChooseFrom();
+            return View(currencies);
         }
 
         [HttpGet]
         public IActionResult Rickshaw()
         {
             var currencies = currencyRepository.CurrenciesToRickshawPage();
-
             return View(currencies);
         }
     }
