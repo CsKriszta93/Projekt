@@ -35,16 +35,14 @@
     </div>
 
     <script>
+        var all_curr = @Html.Raw(JsonConvert.SerializeObject(Model.currencyGraph));
+        var selected_curr = new Array();
 
-
-			var all_curr = @Html.Raw(JsonConvert.SerializeObject(Model.currencyGraph));
-			var selected_curr = new Array();
-
-			var graph;
-			var hoverDetail;
-			var legend;
-			var shelving;
-			var axes;
+        var graph;
+		var hoverDetail;
+		var legend;
+		var shelving;
+		var axes;
 
         function checkbox_click(Id) {
             var chk = document.getElementById(Id);
